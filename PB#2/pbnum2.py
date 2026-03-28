@@ -17,21 +17,27 @@ def probability1():
 
 problem1 = probability1()
 if problem1:
-    print(f'Probability that the word is “MAMMALS” : \n{problem1:2f}')
+    print(f'Probability that the word is “MAMMALS”: \n{problem1:2f}%')
 
 #Problem 2a
 
 pdex2 = pd.read_excel('pbnum2.xlsx')
 print(f'\nTable for problem 2: \n{pdex2}')
 
-def norm_check():
+def norm_check(dataframe):
     """Function to check whether the distribution is normalized or not"""
-    return sum(pdex2['fRx'])
+    return sum(dataframe * 0.2)
 
-norm = norm_check()
+norm = norm_check(pdex2['fRx'])
 if norm:
     print(f'\nThe value of column fRx: \n{norm}'
-          f'\nColumn sum = 1, thus the  the distribution is normalized')
+          f'\nColumn sum = {norm}, thus the  the distribution is not normalized'
+          f'\nTo correct the values and turn them into normalized ones, we need to divide every value of the column pdex2(fRX) by bin size 0.2')
+
+pdex2['normfRx']= pdex2['fRx']/0.2
+new_norm =norm_check(pdex2['normfRx'])
+print(f'\nThe value of column normfRx: \n{new_norm}'
+      f'\nColumn sum = {new_norm}, thus the  the distribution is now normalized')
 
 #Problem 2b
 fig, ax1 = plt.subplots(figsize=(8, 4))
@@ -60,29 +66,33 @@ for r in pdex2['Rx']:
 for f in pdex2['fRx']:
     frglist.append(f)
 
-rgavg = sum(rglisti * frglisti for rglisti,frglisti in zip(rglist,frglist))
+rglist = np.array(rglist)
+frglist = np.array(frglist)
 
-print(f'The average value,Rgavg = {rgavg:2f}')
+bin_mid = 0.2/2
+
+new_rglist = rglist + bin_mid
+
+rgavg = sum(new_rglist * frglist)
+
+print(f'\nThe average value,Rgavg = {rgavg:2f}')
 
 #Problem 2d
-x = np.array(rglist)
-p = np.array(frglist)
-
-mean = np.sum(x * p)
+mean = np.sum(new_rglist * frglist)
 
 #Formula sum( p * (x - mean)^2 )
-variance = np.sum(p * (x - mean)**2)
+variance = np.sum(frglist * (new_rglist - mean)**2)
 std_dev = np.sqrt(variance)
 
 #Formula sum( p * ((x - mean)/sigma)^3 )
-skewness = np.sum(p * ((x - mean) / std_dev)**3)
+skewness = np.sum(frglist * ((new_rglist - mean) / std_dev)**3)
 
 #Formula sum( p * ((x - mean)/sigma)^4 )
-kurtosis = np.sum(p * ((x - mean) / std_dev)**4)
+kurtosis = np.sum(frglist * ((new_rglist - mean) / std_dev)**4)
 
-print(f'\nVariance: {variance:.2f}')
-print(f'\nSkewness: {skewness:.2f}')
-print(f'\nKurtosis: {kurtosis:.2f}')
+print(f'\nVariance: {variance:.4f}')
+print(f'\nSkewness: {skewness:.4f}')
+print(f'\nKurtosis: {kurtosis:.4f}')
 
 #Problem 3
 ##DATA for the exercise https://www.researchgate.net/publication/360116551_Pose_Classification_Using_Three-Dimensional_Atomic_Structure-Based_Neural_Networks_Applied_to_Ion_Channel-Ligand_Docking
