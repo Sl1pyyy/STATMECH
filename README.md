@@ -1,4 +1,4 @@
-Statistical mechanics course
+### Statistical mechanics course
 
 # All problem sets could be found here:
 
