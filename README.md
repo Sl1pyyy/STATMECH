@@ -1,10 +1,10 @@
-# Statistical mechanics course
+### Statistical mechanics course
 
-All problem sets could be found here:
+# All problem sets could be found here:
 
-## [Digital chemistry](https://liwo.strony.ug.edu.pl/DigitChem/index.html)
+[Statistical mechanics 2026](https://liwo.strony.ug.edu.pl/DigitChem/index.html)
 
-***Sets included***
+***Sets included:***
 
 * **Problem set #2:** Probability general theory
 * **Problem set #3:** Boltzmann law
