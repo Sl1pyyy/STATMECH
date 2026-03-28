@@ -2,7 +2,7 @@
 
 # All problem sets could be found here:
 
-[Digital chemistry](https://liwo.strony.ug.edu.pl/DigitChem/index.html)
+[Statistical mechanics 2026](https://liwo.strony.ug.edu.pl/DigitChem/index.html)
 
 ***Sets included:***
 
