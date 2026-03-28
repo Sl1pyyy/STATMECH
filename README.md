@@ -1,6 +1,6 @@
-# Statistical mechanics course
+Statistical mechanics course
 
-All problem sets could be found here:
+# All problem sets could be found here:
 
 ## [Digital chemistry](https://liwo.strony.ug.edu.pl/DigitChem/index.html)
 
