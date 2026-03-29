@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 g0, gp = 2, 1
 T = 80 + 273.15 #K
 dE = 1.06 #kcal/mol
-R = 1.987 * 10**-3 #kcal/mol*K
+R = 1.987 * 10**(-3) #kcal/mol*K
 
 #n0/nt = g0 * exp(-E0/RT)/ exp(-E0/RT + -Ep/RT)
 #np/nt = gp * exp(-Ep/RT)/ exp(-E0/RT + -Ep/RT)
