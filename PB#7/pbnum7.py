@@ -5,7 +5,6 @@ h = 6.626e-34  #J*s
 c = 2.9979e8  #m/s
 kB = 1.3806e-23  # J/K
 
-
 def planck(v, T):
     """Calculates spectral energy density u_v (J*s/m^3)"""
     term1 = (8 * np.pi * h * v ** 3) / (c ** 3)
@@ -25,7 +24,7 @@ for T, label, col in zip(temps, labels, colors):
     u_v = planck(v, T)
     plt.plot(v, u_v, label=label, color=col, lw=2.5)
 
-    #Calculate and Point Out Most Probable Frequency (Wien's Law for Frequency)
+    #Calculate and Point out most probable frequency (Wiens law for frequency)
     v_max = (2.821 * kB * T) / h
     u_max = planck(v_max, T)
 
