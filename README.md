@@ -8,3 +8,4 @@
 
 * **Problem set #2:** Probability general theory
 * **Problem set #3:** Boltzmann law
+* **Problem set #4:** Population, partition function, entropy, entalpy, average energy, free energy 
