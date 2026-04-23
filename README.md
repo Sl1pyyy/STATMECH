@@ -10,3 +10,4 @@
 * **Problem set #3:** Boltzmann law
 * **Problem set #4:** Population, partition function, entropy, entalpy, average energy, free energy 
 * **Problem set #7:** Plancks law
+* **Problem set #8:** Debye law, Dulong-Petit law, Grand partition function
