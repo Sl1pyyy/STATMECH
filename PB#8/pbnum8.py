@@ -49,7 +49,7 @@ def debye_cv(r_ratio):
     return 9 * (r_ratio**3) * integral
 
 cv_values = [debye_cv(r) for r in r_values]
-debye = t ** 3  * ((12 * np.pi ** 4) / 5 )
+debye = (t ** 3)  * ((12 * np.pi ** 4) / 5 )
 
 plt.plot(r_values, cv_values, label = ' Heat capacity in T/ΘD')
 plt.plot(r_values, debye, label = 'Debye T^3 law')
