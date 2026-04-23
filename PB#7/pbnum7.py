@@ -43,7 +43,7 @@ for T, label, col in zip(temps, labels, colors):
 
 plt.xscale('log')
 plt.yscale('log')
-plt.title("Planck's Law: Spectral Energy Density vs. Frequency", fontsize=14)
+plt.title("Planck's Law: Energy density plot", fontsize=14)
 plt.xlabel('Frequency (Hz)', fontsize=12)
 plt.ylabel('Energy density (J·s/m³)', fontsize=12)
 plt.ylim(1e-25, 1e10)
