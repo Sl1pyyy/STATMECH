@@ -51,12 +51,13 @@ def debye_cv(r_ratio):
 cv_values = [debye_cv(r) for r in r_values]
 debye = (t ** 3)  * ((12 * np.pi ** 4) / 5 )
 
-plt.plot(r_values, cv_values, label = ' Heat capacity in T/ΘD')
+plt.plot(r_values, cv_values, label = 'Debye law')
 plt.plot(r_values, debye, label = 'Debye T^3 law')
 plt.axhline(y = 3, color = 'purple', linestyle = '--', label = 'Dulong-Petit limit 3')
 plt.ylim(top = 3.1, bottom = 0)
 plt.xlabel('T/ΘD')
 plt.ylabel('Cv/R')
+plt.title('Heat capacity in T/ΘD')
 plt.legend()
 plt.grid(True)
 plt.show()
