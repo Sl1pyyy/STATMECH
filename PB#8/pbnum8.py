@@ -1,6 +1,5 @@
 import matplotlib.pyplot as plt
 import numpy as np
-from openpyxl.chart import label
 
 h = 6.626 * 10 ** (-34)  #J*s
 kB = 1.3806 * 10 ** (-23)  # J/K
