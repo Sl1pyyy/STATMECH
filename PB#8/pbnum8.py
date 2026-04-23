@@ -52,6 +52,7 @@ cv_values = [debye_cv(r) for r in r_values]
 debye = (t ** 3)  * ((12 * np.pi ** 4) / 5 )
 
 plt.plot(r_values, cv_values, label = 'Debye law')
+#Approximation of the Debye T^3 law
 plt.plot(r_values, debye, label = 'Debye T^3 law')
 plt.axhline(y = 3, color = 'purple', linestyle = '--', label = 'Dulong-Petit limit 3')
 plt.ylim(top = 3.1, bottom = 0)
