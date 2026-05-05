@@ -12,3 +12,4 @@
 * **Problem set #7:** Plancks law
 * **Problem set #8:** Debye law, Dulong-Petit law, Grand partition function
 * **Problem set #9:** Ideal gases of homodiatomic molecules
+* **Problem set #10:** Homodiatomic and heterodiatomic molecules mechanics
