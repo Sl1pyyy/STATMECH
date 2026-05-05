@@ -42,9 +42,9 @@ Uel = (dE1 * F1) / q
 #Heat capacity contributions
 Cvt = 1.5 * R
 
-Cvel = R * (dE1 / (R * T)) * w0 * F1 / (q) ** 2
+Cvel = R * ((dE1 / (R * T)) ** 2) * w0 * F1 / (q ** 2)
 
-print(f'Electronic partition function = {q}, translational energy = {Ut:.2f} J/mol, electronic energy = {Uel:.2f} J/mol'
+print(f'\nElectronic partition function = {q:.2f}, translational energy = {Ut:.2f} J/mol, electronic energy = {Uel:.2f} J/mol'
       f'\nHeat capacity (Cv,t) = {Cvt:.2f} J/(mol * K), heat capacity (Cv,el) = {Cvel:.2f} J/(mol * K)'
       f'\nRelative electronic contributions: energy - {Uel/(Uel  + Ut) * 100:.2f}%, heat capacity - {Cvel/(Cvel + Cvt) * 100:.2f}%')
 
@@ -103,7 +103,7 @@ def plot_distr(T):
     for ax in axs.flat:
         ax.set_xlabel('State number (v or J)')
         ax.grid(alpha=0.3)
-
+    plt.tight_layout()
     plt.show()
 
 plot_distr(T1)
