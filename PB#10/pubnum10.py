@@ -46,6 +46,14 @@ for temp in T:
     list_cv_eq.append(cv_eq)
     list_cv_normal.append(cv_normal)
 
+
+print(f'The equillibrium fractions of ortho-hydrogen {np.float32(list_f_ortho)}'
+      f'\nThe equillibrium fractions of para-hydrogen {np.float32(list_f_para)}')
+print(f'\nThe heat capacity of the ortho-hydrogen {np.float32(list_cv_o)}')
+print(f'\nThe heat capacity of the para-hydrogen {np.float32(list_cv_p)}')
+print(f'\nThe heat capacity of the equilibrium mixture of ortho- and para-hydrogen {np.float32(list_cv_eq)}')
+print(f'\n The heat capacity of the mixture of ortho- and para-hydrogen with fractions of these species frozen {np.float32(list_cv_normal)}')
+
 #Plotting 6 plots including experimental data
 fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(10, 10))
 
