@@ -1,127 +1,154 @@
-import numpy as np
 import matplotlib.pyplot as plt
 import math
 
 R = 8.314 * 10 ** (-3)  # kJ / (mol * K)
 H_cm = 1.4388 # K
 
-def vib_energy(wavenumber, T):
-    """Calculating vibrational internal energy contribution in kJ/mol"""
-    e = 0
-    for w in wavenumber:
-        Ov = w * H_cm
-        e += R * (Ov / (np.exp(Ov / T) -1))
-        return e
-
 #Problem 1
 
-def xef2_reaction():
-    """Xe + F2 = XeF2 reaction energy plot"""
-    de_f2 = 154.8
-    de_xef2 = 267.8
-    w_f2 = [894]
-    w_xef2 = [214, 214, 515, 555]
+def plot_xef2_reaction_energy():
+    R = 8.314  # J/(mol*K)
+    h_cm = 1.4388  # K
 
-    T = np.linspace(300, 2000, 100)
-    delta_u = []
+    #Electronic energy change in kJ/mol
+    # -267.8 - (-154.8) = -113.0 kJ/mol
+    E_elec = -113.0
 
-    delta_elec = -(de_xef2 - de_f2)
+    wavenumbers_xef2 = [214, 214, 515, 555]  # 4 total modes (214 is degenerate)
+    wavenumbers_f2 = [894]  # 1 mode
 
-    for t in T:
-        u_trans = -1.5 * R * t
-        u_vib = vib_energy(w_xef2, t) - vib_energy(w_f2, t)
-        #delta_rot is 0 as derived in report
-        delta_u.append(delta_elec + u_trans + u_vib)
+    theta_xef2 = []
+    for wn in wavenumbers_xef2:
+        theta_xef2.append(wn * h_cm)
 
-    plt.figure(figsize=(10, 8))
-    plt.plot(T, delta_u,color='skyblue')
-    plt.title("Reaction energy for Xe + F2 reaction")
-    plt.xlabel("Temperature [K]")
-    plt.ylabel("Energy change (U) [kJ/mol]")
-    plt.grid(True)
+    theta_f2 = []
+    for wn in wavenumbers_f2:
+        theta_f2.append(wn * h_cm)
+
+    temperature = []
+    U = []
+
+    for T in range(300, 2010, 10):
+
+        u_trans = -1.5 * R * T
+
+        u_vib_xef2 = 0
+        for theta in theta_xef2:
+            u_vib_xef2 = u_vib_xef2 + (R * theta) / (math.exp(theta / T) - 1)
+
+        u_vib_f2 = 0
+        for theta in theta_f2:
+            u_vib_f2 = u_vib_f2 + (R * theta) / (math.exp(theta / T) - 1)
+
+        U_th = u_trans + u_vib_xef2 - u_vib_f2
+        E_total = E_elec + (U_th / 1000.0)
+        temperature.append(T)
+        U.append(E_total)
+
+    plt.figure(figsize=(8, 5))
+    plt.plot(temperature, U, color="skyblue", linewidth=2.5)
+    plt.title("Total reaction energy change (Ureact.)", fontsize=12)
+    plt.xlabel("Temperature [K]", fontsize=11)
+    plt.ylabel("Ureact. [kJ/mol]", fontsize=11)
+    plt.grid(True, linestyle="--", alpha=0.5)
     plt.show()
 
 #Problem 2
-def nitrogen_exchange():
-    """N2 isotope exchange and Arrhenius plot."""
-    O_14_14 = 3374.0
+def plot_nitrogen_isotope_exchange():
+    m14 = 14.003074
+    m15 = 15.000108
 
-    m14 = 14.003
-    m15 = 15.000
+    #Given characteristic vibrational temperature for 14N2
+    theta_14_14 = 3374.0  # K
 
-    mu_14_14 = (m14 * m14) / (m14 + m14)
-    mu_15_15 = (m15 * m15) / (m15 + m15)
+    mu_14_14 = m14 / 2.0
+    mu_15_15 = m15 / 2.0
     mu_14_15 = (m14 * m15) / (m14 + m15)
 
-    O_15_15 = O_14_14 * math.sqrt(mu_14_14 / mu_15_15)
-    O_14_15 = O_14_14 * math.sqrt(mu_14_14 / mu_14_15)
+    theta_15_15 = theta_14_14 * math.sqrt(mu_14_14 / mu_15_15)
+    theta_14_15 = theta_14_14 * math.sqrt(mu_14_14 / mu_14_15)
 
-    inv_temp_list = []
-    log_k_list = []
+    dZPE = (2.0 * theta_14_15 - theta_14_14 - theta_15_15) / 2.0
 
+    mass_factor = 2.0 * (m14 + m15) / math.sqrt(m14 * m15)
 
-    for T in range(300, 2050, 50):
-        #Symmetry factor is (2*2)/(1*1) = 4
-        symmetry = 4.0
+    t_values = list(range(200, 5200, 200))
 
-        M1414 = 2 * m14
-        M1515 = 2 * m15
-        M1415 = m14 + m15
-        mass_factor = ((M1415 ** 2) / (M1414 * M1515)) ** 1.5
+    log_K_list = []
+    x_labels = []
+    x_positions = []
 
-        q1414 = math.exp(-O_14_14 / (2 * T)) / (1 - math.exp(-O_14_14 / T))
-        q1515 = math.exp(-O_15_15 / (2 * T)) / (1 - math.exp(-O_15_15 / T))
-        q1415 = math.exp(-O_14_15 / (2 * T)) / (1 - math.exp(-O_14_15 / T))
+    for idx, T in enumerate(t_values):
+        zpe_term = math.exp(-dZPE / T)
 
-        vib_factor = (q1415 ** 2) / (q1414 * q1515)
+        num = (1.0 - math.exp(-theta_14_14 / T)) * (1.0 - math.exp(-theta_15_15 / T))
+        den = (1.0 - math.exp(-theta_14_15 / T)) ** 2
+        vib_term = num / den
 
-        k_val = symmetry * mass_factor * vib_factor
+        K = mass_factor * zpe_term * vib_term
 
-        inv_temp_list.append(1.0 / T)
-        log_k_list.append(math.log10(k_val))
+        log_K_list.append(math.log10(K))
 
-    plt.plot(inv_temp_list, log_k_list, color="blue")
-    plt.title("Arrhenius plot for nitrogen isotope exchange")
-    plt.xlabel("1/T [K^-1]")
-    plt.ylabel("log10(K)")
-    plt.grid(True)
+        x_positions.append(idx)
+        inv_T = 1000.0 / T
+        if inv_T == int(inv_T):
+            x_labels.append(f"{int(inv_T)}")
+        else:
+            x_labels.append(f"{inv_T:.3g}")
+
+    plt.figure(figsize=(11, 5))
+    plt.plot(x_positions, log_K_list, color="green", linewidth=2, label=" Arrhenius plot log K = f(1/T)")
+    plt.axhline(y=math.log10(4.0), color="coral", linestyle="--", label="lg(4) = 0.602 reference")
+    plt.title("Arrhenius plot log K = f(1/T)", fontsize=12)
+    plt.xlabel("$1000/T\ (\mathrm{K}^{-1})$", fontsize=11)
+    plt.ylabel("log_(10) K", fontsize=11)
+    plt.xlim(-0.5, len(x_positions) - 0.5)
+    plt.ylim(0.6012, 0.6021)
+    plt.grid(True, linestyle="-", alpha=0.2)
+    plt.legend()
+    plt.tight_layout()
     plt.show()
 
 
 #Problem 3
 
-def N14_N15_exchange():
-    # Each column is [Temperature, Time, N14N15_units, N15N15_units]
-    data = [
-        [465, 2, 100.5, 51.50],
-        [465, 17, 125.8, 39.00],
-        [465, 37, 163.0, 22.60],
-        [465, 60, 194.0, 14.00],
-        [500, 2, 108.0, 48.00],
-        [500, 46, 207.0, 13.25]
+def isotope_exchange():
+    #Raw experimental data points: (Temperature, time, n_14_15, n_15_15)
+    data_points = [
+        # 465 °C
+        {"T_C": 465, "time": 2, "n_14_15": 100.5, "n_15_15": 51.50},
+        {"T_C": 465, "time": 17, "n_14_15": 125.8, "n_15_15": 39.00},
+        {"T_C": 465, "time": 37, "n_14_15": 163.0, "n_15_15": 22.60},
+        {"T_C": 465, "time": 60, "n_14_15": 194.0, "n_15_15": 14.00},
+        # 500 °C
+        {"T_C": 500, "time": 2, "n_14_15": 108.0, "n_15_15": 48.00},
+        {"T_C": 500, "time": 8, "n_14_15": 142.0, "n_15_15": 38.00},
+        {"T_C": 500, "time": 21, "n_14_15": 184.0, "n_15_15": 20.00},
+        {"T_C": 500, "time": 26, "n_14_15": 197.5, "n_15_15": 17.40},
+        {"T_C": 500, "time": 35, "n_14_15": 202.0, "n_15_15": 13.40},
+        {"T_C": 500, "time": 46, "n_14_15": 207.0, "n_15_15": 13.25}
     ]
 
-    print("Temp(C) | Time(h) | Frac_14-14 | Frac_14-15 | Frac_15-15 | K_app")
-    print("------------------------------------------------------------------")
+    current_temp = None
 
-    for row in data:
-        temp = row[0]
-        time = row[1]
-        n1415 = row[2]
-        n1515 = row[3]
-        n1414 = 1000.0  #Reference base
+    for pt in data_points:
+        if pt["T_C"] != current_temp:
+            current_temp = pt["T_C"]
+            print(f"\n--- Fractions and K — {current_temp} °C ---")
+            print(
+                f"{'t (h)':<6}{'n(14N2)':<10}{'n(15N2)':<10}{'n(14N15N)':<12}{'f(14N2)%':<11}{'f(15N2)%':<11}{'f(14N15N)%':<13}{'K_app':<6}")
+            print("-" * 85)
 
-        total_units = n1414 + n1415 + n1515
-        f1414 = n1414 / total_units
-        f1415 = n1415 / total_units
-        f1515 = n1515 / total_units
-
-        # Formula: K = [14-15]^2 / ([14-14] * [15-15])
-        k_app = (n1415 ** 2) / (n1414 * n1515)
-        print(temp, "    |", time, "     |", round(f1414, 3), "   |",
-              round(f1415, 3), "   |", round(f1515, 3), "   |", round(k_app, 3))
+        n_14_14 = 1000.0 - (pt["n_14_15"] / 2.0)
+        n_total = n_14_14 + pt["n_15_15"] + pt["n_14_15"]
+        f_14_14 = (n_14_14 / n_total) * 100.0
+        f_15_15 = (pt["n_15_15"] / n_total) * 100.0
+        f_14_15 = (pt["n_14_15"] / n_total) * 100.0
+        K_app = (f_14_15 / 100.0) ** 2 / ((f_14_14 / 100.0) * (f_15_15 / 100.0))
+        print(
+            f"{pt['time']:<6}{n_14_14:<10.1f}{pt['n_15_15']:<10.2f}{pt['n_14_15']:<12.1f}{f_14_14:<11.2f}{f_15_15:<11.2f}{f_14_15:<13.2f}{K_app:<6.3f}")
 
 if __name__ == "__main__":
-     xef2_reaction()
-     nitrogen_exchange()
-     N14_N15_exchange()
+     plot_xef2_reaction_energy()
+     plot_nitrogen_isotope_exchange()
+     isotope_exchange()
