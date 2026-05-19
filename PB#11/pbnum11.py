@@ -98,7 +98,7 @@ def plot_nitrogen_isotope_exchange():
 
     plt.figure(figsize=(11, 5))
     plt.plot(x_positions, log_K_list, color="green", linewidth=2, label=" Arrhenius plot log K = f(1/T)")
-    plt.axhline(y=math.log10(4.0), color="coral", linestyle="--", label="lg(4) = 0.602 reference")
+    plt.axhline(y=math.log10(4.0), color="coral", linestyle="--", label="lg(4) = 0.602 asymptotic high-temperature thermodynamic limit")
     plt.title("Arrhenius plot log K = f(1/T)", fontsize=12)
     plt.xlabel("$1000/T\ (\mathrm{K}^{-1})$", fontsize=11)
     plt.ylabel("log_(10) K", fontsize=11)
